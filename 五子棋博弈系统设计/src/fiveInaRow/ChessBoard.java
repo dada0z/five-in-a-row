@@ -1,4 +1,4 @@
-package 五子棋博弈系统设计;
+package fiveInaRow;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -28,12 +28,16 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ChessBoard extends JPanel implements MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int MARGIN = 30;// 边距
 	public static int GRID_SPAN = 35;// 网格间距
-	public static final int ROWS = 15;// 棋盘行数
-	public static final int COLS = 15;// 棋盘列数
+	public static final int ROWS = 15;
+	public static final int COLS = 15;
 
-	Piece[] pieces = new Piece[(ROWS) * (COLS)];// 初始每个数组元素为null
+	Piece[] pieces = new Piece[(ROWS) * (COLS)];
 	boolean isBlack;// 是否黑棋先手，默认开始是黑棋先手
 	boolean isComputer;// 是否当前角色为计算机
 	boolean isFirst;// 玩家先手为真
@@ -53,22 +57,22 @@ public class ChessBoard extends JPanel implements MouseListener {
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException e1) {
-			// TODO 自动生成的 catch 块
+			// TODO
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO 自动生成的 catch 块
+			// TODO
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO 自动生成的 catch 块
+			// TODO
 			e1.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO 自动生成的 catch 块
+			// TODO
 			e1.printStackTrace();
 		}
 		try {
-			bgImage = ImageIO.read(new File("五子棋背景图片.jpg"));
+			bgImage = ImageIO.read(new File("background.jpg"));
 		} catch (IOException e1) {
-			// TODO 自动生成的 catch 块
+			// TODO
 			e1.printStackTrace();
 		}
 		addMouseListener(this);
@@ -156,7 +160,6 @@ public class ChessBoard extends JPanel implements MouseListener {
 
 	public void mousePressed(MouseEvent evt) {// 鼠标在组件上按下时调用
 
-		
 		getCurPointIndex(evt);
 		handleMousePressed();
 	}
@@ -187,11 +190,12 @@ public class ChessBoard extends JPanel implements MouseListener {
 		return false;
 	}
 
-	public void getCurPointIndex(MouseEvent evt){
+	public void getCurPointIndex(MouseEvent evt) {
 		// 将鼠标点击的坐标位置转换成网格索引
-				curPointHIndex = (evt.getX() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
-				curPointVIndex = (evt.getY() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
+		curPointHIndex = (evt.getX() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
+		curPointVIndex = (evt.getY() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
 	}
+
 	public void handleMousePressed() {
 		if (!isComputer || (isComputer && curRole == "玩家")) {
 

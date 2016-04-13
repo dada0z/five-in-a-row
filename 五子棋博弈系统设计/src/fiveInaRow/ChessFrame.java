@@ -1,4 +1,4 @@
-package 五子棋博弈系统设计;
+package fiveInaRow;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -11,29 +11,26 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class ChessFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ChessBoard chessBoard;
 	private JMenuBar menuBar;
 
 	private JMenuItem startMenuItem, saveMenuItem, exitMenuItem, undoMenuItem;
-	
+
 	private JMenuItem manToManMenuItem, manToMachineMenuItem;
-	private JMenuItem manFirstMenuItem,machineFirstMenuItem;
+	private JMenuItem manFirstMenuItem, machineFirstMenuItem;
 	private JMenuItem ruleMenuItem, aboutMenuItem;
 	private JMenu sysMenu, editMenu, modeMenu, whoFirstMenu, helpMenu;
 
 	public String msg;
 
 	enum Menu {
-		start("开始游戏", 1),
-		exit("退出", 2),
-		undo("悔棋", 3), 
-		man_man("人人对弈", 4), 
-		man_machine("人机对弈", 5), 
-		rule("规则", 6), 
-		about("关于五子棋", 7), 
-		manFirst("玩家先手",8), 
-		machineFirst("计算机先手", 9), 
-		save("保存棋谱", 10); // 成员变量
+		start("开始游戏", 1), exit("退出", 2), undo("悔棋", 3), man_man("人人对弈", 4), man_machine(
+				"人机对弈", 5), rule("规则", 6), about("关于五子棋", 7), manFirst("玩家先手",
+				8), machineFirst("计算机先手", 9), save("保存棋谱", 10); // 成员变量
 		public static int getIndex(String name) {
 			for (Menu menu : Menu.values()) {
 				if (menu.name == name)
@@ -58,12 +55,12 @@ public class ChessFrame extends JFrame {
 
 	public ChessFrame() {
 
-		setTitle("五子棋");// 设置标题
+		setTitle("五子棋");
 		chessBoard = new ChessBoard();
 		Container contentPane = getContentPane();
 		contentPane.add(chessBoard);
-		
-		//设置chessBoard不透明
+
+		// 设置chessBoard不透明
 		chessBoard.setOpaque(true);
 		// 创建和添加菜单
 		menuBar = new JMenuBar();
@@ -121,13 +118,13 @@ public class ChessFrame extends JFrame {
 	}
 
 	private class ChessBoardListener implements ActionListener {
-		
+
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();// 获得事件源
 			int value;
 			switch (Menu.getIndex(cmd)) {
 			case 1:
-				msg = String.format("您已经选择\n重新开始游戏\n确定重新开始吗？");
+				msg = String.format("确定重新开始吗？");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					chessBoard.isBlack = true;
@@ -140,7 +137,7 @@ public class ChessFrame extends JFrame {
 				break;
 			case 2:
 
-				msg = String.format("您已经选择\n退出\n真的退出吗？");
+				msg = String.format("确定退出吗？");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					System.exit(0);
@@ -154,7 +151,7 @@ public class ChessFrame extends JFrame {
 				chessBoard.repaint();
 				break;
 			case 4:
-				msg = String.format("您已经选择\n人人对弈模式\n是否重新开始！");
+				msg = String.format("确定重新开始吗？");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					chessBoard.isBlack = true;
@@ -166,7 +163,7 @@ public class ChessFrame extends JFrame {
 				}
 				break;
 			case 5:
-				msg = String.format("您已经选择\n人机对弈模式\n是否重新开始！");
+				msg = String.format("确定重新开始吗？");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					chessBoard.isComputer = true;
@@ -184,11 +181,11 @@ public class ChessFrame extends JFrame {
 				chessBoard.showMessage(msg);
 				break;
 			case 7:
-				msg = String.format("作   者：大 大\nE-mail:18345153671@163.com");
+				msg = String.format("author：dada0z\nE-mail:dada0z@163.com");
 				chessBoard.showMessage(msg);
 				break;
 			case 8:
-				msg = String.format("您已经选择\n玩家先手\n是否重新开始！");
+				msg = String.format("确定重新开始吗？");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					chessBoard.isBlack = true;
