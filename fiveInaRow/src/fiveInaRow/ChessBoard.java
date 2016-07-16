@@ -216,7 +216,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 		placePiece(curPieceXIndex, curPieceYIndex);
 		repaint();
 		if (isWin()) {
-			String msg = String.format("Congratulation锟斤拷%s win!", isBlackFirst ? "black" : "white");
+			String msg = String.format("Congratulation,%s win!", isBlackFirst ? "black" : "white");
 			showMessage(msg);
 			isGameOver = true;
 		}
