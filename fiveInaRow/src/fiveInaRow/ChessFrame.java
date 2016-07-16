@@ -1,4 +1,4 @@
-package fiveInaRow;
+锘縫ackage fiveInaRow;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -11,9 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class ChessFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private ChessBoard chessBoard;
 	private JMenuBar menuBar;
@@ -28,9 +26,9 @@ public class ChessFrame extends JFrame {
 	public String msg;
 
 	enum Menu {
-		start("开始游戏", 1), exit("退出", 2), undo("悔棋", 3), man_man("人人对弈", 4), man_machine(
-				"人机对弈", 5), rule("规则", 6), about("关于五子棋", 7), manFirst("玩家先手",
-				8), machineFirst("计算机先手", 9), save("保存棋谱", 10); // 成员变量
+		start("Start", 1), exit("Exit", 2), undo("Undo", 3), man_man("Man-Man", 4), man_machine("Man-Machine", 5), rule(
+				"Rules", 6), about("About",
+						7), manFirst("ManFirst", 8), machineFirst("MachineFirst", 9), save("Save", 10);
 		public static int getIndex(String name) {
 			for (Menu menu : Menu.values()) {
 				if (menu.name == name)
@@ -55,33 +53,32 @@ public class ChessFrame extends JFrame {
 
 	public ChessFrame() {
 
-		setTitle("五子棋");
+		setTitle("Five In a Row");
 		chessBoard = new ChessBoard();
 		Container contentPane = getContentPane();
 		contentPane.add(chessBoard);
-
-		// 设置chessBoard不透明
 		chessBoard.setOpaque(true);
-		// 创建和添加菜单
-		menuBar = new JMenuBar();
-		sysMenu = new JMenu("文件");
-		editMenu = new JMenu("编辑");
-		modeMenu = new JMenu("模式");
-		whoFirstMenu = new JMenu("先手");
-		helpMenu = new JMenu("帮助");
-		// 初始化菜单项
-		startMenuItem = new JMenuItem("开始游戏");
-		saveMenuItem = new JMenuItem("保存棋谱");
-		exitMenuItem = new JMenuItem("退出");
-		undoMenuItem = new JMenuItem("悔棋");
-		manToManMenuItem = new JMenuItem("人人对弈");
-		manToMachineMenuItem = new JMenuItem("人机对弈");
-		manFirstMenuItem = new JMenuItem("玩家先手");
-		machineFirstMenuItem = new JMenuItem("计算机先手");
-		ruleMenuItem = new JMenuItem("规则");
-		aboutMenuItem = new JMenuItem("关于五子棋");
 
-		// 将菜单项添加到菜单上
+		// Add Menu
+		menuBar = new JMenuBar();
+		sysMenu = new JMenu("File");
+		editMenu = new JMenu("Edit");
+		modeMenu = new JMenu("Mode");
+		whoFirstMenu = new JMenu("First");
+		helpMenu = new JMenu("Help");
+		// Init MenuItem
+		startMenuItem = new JMenuItem("Start");
+		saveMenuItem = new JMenuItem("Save");
+		exitMenuItem = new JMenuItem("Exit");
+		undoMenuItem = new JMenuItem("Undo");
+		manToManMenuItem = new JMenuItem("Man-Man");
+		manToMachineMenuItem = new JMenuItem("Man-Machine");
+		manFirstMenuItem = new JMenuItem("ManFirst");
+		machineFirstMenuItem = new JMenuItem("MachineFirst");
+		ruleMenuItem = new JMenuItem("Rules");
+		aboutMenuItem = new JMenuItem("About");
+
+		// Add MenuItem to Menu
 		sysMenu.add(startMenuItem);
 		sysMenu.add(saveMenuItem);
 		sysMenu.add(exitMenuItem);
@@ -92,9 +89,9 @@ public class ChessFrame extends JFrame {
 		whoFirstMenu.add(machineFirstMenuItem);
 		helpMenu.add(ruleMenuItem);
 		helpMenu.add(aboutMenuItem);
-		// 初始化按钮事件监听器内部类
+		// Init chessBoard listener
 		ChessBoardListener listener = new ChessBoardListener();
-		// 将菜单项注册到事件监听器上
+		// listen to the menu items
 		this.startMenuItem.addActionListener(listener);
 		saveMenuItem.addActionListener(listener);
 		exitMenuItem.addActionListener(listener);
@@ -105,39 +102,31 @@ public class ChessFrame extends JFrame {
 		machineFirstMenuItem.addActionListener(listener);
 		ruleMenuItem.addActionListener(listener);
 		aboutMenuItem.addActionListener(listener);
-		menuBar.add(sysMenu); // 将系统菜单添加到菜单栏上
-		menuBar.add(editMenu); // 将编辑菜单添加到菜单栏上
-		menuBar.add(modeMenu); // 将模式菜单添加到菜单栏上
-		menuBar.add(whoFirstMenu); // 将先手菜单添加到菜单栏上
-		menuBar.add(helpMenu); // 将帮助菜单添加到菜单栏上
-		setJMenuBar(menuBar); // 将menuBar设置为菜单栏
-		add(chessBoard); // 将面板对象添加到窗体上
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 设置界面关闭事件
-		pack();// 自适应大小
+		menuBar.add(sysMenu);
+		menuBar.add(editMenu);
+		menuBar.add(modeMenu);
+		menuBar.add(whoFirstMenu);
+		menuBar.add(helpMenu);
+		setJMenuBar(menuBar);
+		add(chessBoard);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
 
 	}
 
 	private class ChessBoardListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			String cmd = e.getActionCommand();// 获得事件源
+			String cmd = e.getActionCommand();
 			int value;
 			switch (Menu.getIndex(cmd)) {
 			case 1:
-				msg = String.format("确定重新开始吗？");
-				value = chessBoard.showWarning(msg);
-				if (value == JOptionPane.YES_OPTION) {
-					chessBoard.isBlack = true;
-					chessBoard.restartGame();
-					chessBoard.repaint();
-				}
-				if (value == JOptionPane.YES_NO_CANCEL_OPTION) {
-					break;
-				}
+				chessBoard.isBlackFirst = true;
+				chessBoard.restartGame();
+				chessBoard.repaint();
 				break;
 			case 2:
-
-				msg = String.format("确定退出吗？");
+				msg = String.format("Are you sure to exit?");
 				value = chessBoard.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					System.exit(0);
@@ -151,74 +140,43 @@ public class ChessFrame extends JFrame {
 				chessBoard.repaint();
 				break;
 			case 4:
-				msg = String.format("确定重新开始吗？");
-				value = chessBoard.showWarning(msg);
-				if (value == JOptionPane.YES_OPTION) {
-					chessBoard.isBlack = true;
-					chessBoard.isComputer = false;
-					chessBoard.restartGame();
-				}
-				if (value == JOptionPane.YES_NO_CANCEL_OPTION) {
-					break;
-				}
+				chessBoard.isBlackFirst = true;
+				chessBoard.isComputer = false;
+				chessBoard.restartGame();
 				break;
 			case 5:
-				msg = String.format("确定重新开始吗？");
-				value = chessBoard.showWarning(msg);
-				if (value == JOptionPane.YES_OPTION) {
-					chessBoard.isComputer = true;
-					chessBoard.isBlack = true;
-					chessBoard.isFirst = true;
-					chessBoard.restartGame();
-				}
-				if (value == JOptionPane.YES_NO_CANCEL_OPTION) {
-					break;
-				}
+				chessBoard.isComputer = true;
+				chessBoard.isBlackFirst = true;
+				chessBoard.isManFirst = true;
+				chessBoard.restartGame();
 				break;
 			case 6:
-				msg = String
-						.format("无禁手\n默认黑方先手\n黑白双方依次落子\n任意一方在横向竖向斜向\n拥有五颗连续的棋子则获胜");
+				msg = String.format("Standard Gomoku");
 				chessBoard.showMessage(msg);
 				break;
 			case 7:
-				msg = String.format("author：dada0z\nE-mail:dada0z@163.com");
+				msg = String.format("Author锛歞ada0z\nE-mail:dada0z@163.com");
 				chessBoard.showMessage(msg);
 				break;
 			case 8:
-				msg = String.format("确定重新开始吗？");
-				value = chessBoard.showWarning(msg);
-				if (value == JOptionPane.YES_OPTION) {
-					chessBoard.isBlack = true;
-					chessBoard.isFirst = true;
-					chessBoard.curRole = "玩家";
-					chessBoard.isComputer = true;
-					chessBoard.restartGame();
-					;
-				}
-				if (value == JOptionPane.YES_NO_CANCEL_OPTION) {
-					break;
-				}
+				chessBoard.isBlackFirst = true;
+				chessBoard.isManFirst = true;
+				chessBoard.curRole = "Man";
+				chessBoard.isComputer = true;
+				chessBoard.restartGame();
 				break;
 			case 9:
-				msg = String.format("您已经选择\n计算机先手\n是否重新开始！");
-				value = chessBoard.showWarning(msg);
-				if (value == JOptionPane.YES_OPTION) {
-					chessBoard.isBlack = true;
-					chessBoard.isFirst = false;
-					chessBoard.curRole = "计算机";
-					chessBoard.isComputer = true;
-					chessBoard.restartGame();
-					chessBoard.machineDo();
-					chessBoard.isBlack = false;
-					chessBoard.curRole = "玩家";
-				}
-
-				if (value == JOptionPane.YES_NO_CANCEL_OPTION) {
-					break;
-				}
+				chessBoard.isBlackFirst = true;
+				chessBoard.isManFirst = false;
+				chessBoard.curRole = "Machine";
+				chessBoard.isComputer = true;
+				chessBoard.restartGame();
+				chessBoard.machineDo();
+				chessBoard.isBlackFirst = false;
+				chessBoard.curRole = "Man";
 				break;
 			case 10:
-				chessBoard.saveChessManual();
+				chessBoard.saveChessHistory();
 				break;
 			default:
 				break;

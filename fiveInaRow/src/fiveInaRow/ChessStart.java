@@ -1,11 +1,9 @@
-package fiveInaRow;
+﻿package fiveInaRow;
 
 import javax.swing.JFrame;
 
 public class ChessStart extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public static final int HEIGHT = 600, WIDTH = 560;
 
