@@ -52,7 +52,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 
 		try {
 			// set the chess board style
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			bgImage = ImageIO.read(new File("background.jpg"));
 		} catch (Exception e) {
 			e.printStackTrace();
