@@ -15,9 +15,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
 import utils.ShowMesssage;;
 
 public class ChessBoard extends JPanel implements MouseListener {
