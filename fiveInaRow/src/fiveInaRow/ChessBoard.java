@@ -18,40 +18,56 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import utils.ShowMesssage;;
+import utils.ShowMesssage;
 
 public class ChessBoard extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	public static final int MARGIN = 30;
-	public static int GRID_SPAN = 35;
-	public static final int ROWS = 15;
-	public static final int COLS = 15;
+	private static final int MARGIN = 30;
+	private static int GRID_SPAN = 35;
+	private static final int ROWS = 15;
+	private static final int COLS = 15;
 	private Piece[] pieces = new Piece[(ROWS) * (COLS)];
 	private int pieceCount;
 
-	boolean isBlackFirst;
-	boolean isComputer;
-	boolean isManFirst;
-	String curRole;
-	boolean isGameOver;
-	int curPieceXIndex, curPieceYIndex;
+	private boolean isBlackFirst;
+	private boolean isComputer;
+	private boolean isManFirst;
+	private String curRole;
+	private boolean isGameOver;
+	private int curPieceXIndex, curPieceYIndex;
 
 	private static ChessBoard INSTANCE = new ChessBoard();
-	Color tempColor;
-	int chessBoardWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-	int chessBoardHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-	BufferedImage bgImage;
+	private Color tempColor;
+	private int chessBoardWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+	private int chessBoardHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+	private BufferedImage bgImage;
 
 	public Piece[] getPieces() {
 		return pieces;
 	}
-	
-	public int getPieceCount(){
+
+	public int getPieceCount() {
 		return pieceCount;
 	}
-	
-	public static ChessBoard getInstance(){
+
+	public static ChessBoard getInstance() {
 		return INSTANCE;
+	}
+
+	public void setBlackFirst(boolean isBlackFirst) {
+		this.isBlackFirst = isBlackFirst;
+	}
+
+	public void setComputer(boolean isComputer) {
+		this.isComputer = isComputer;
+	}
+
+	public void setManFirst(boolean isManFirst) {
+		this.isManFirst = isManFirst;
+	}
+
+	public void setCurRole(String curRole) {
+		this.curRole = curRole;
 	}
 
 	private ChessBoard() {
@@ -422,7 +438,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 			else
 				break;
 		}
-		
+
 		for (int x = curPieceXIndex + 1, y = curPieceYIndex + 1; x <= COLS && y <= ROWS; x++, y++) {
 			Color c = isBlackFirst ? Color.black : Color.white;
 			if (getChess(x, y, c) != null)

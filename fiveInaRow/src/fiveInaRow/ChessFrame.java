@@ -121,7 +121,7 @@ public class ChessFrame extends JFrame {
 			int value;
 			switch (Menu.getIndex(cmd)) {
 			case 1:
-				chessBoard.isBlackFirst = true;
+				chessBoard.setBlackFirst(true);
 				chessBoard.restartGame();
 				chessBoard.repaint();
 				break;
@@ -140,14 +140,14 @@ public class ChessFrame extends JFrame {
 				chessBoard.repaint();
 				break;
 			case 4:
-				chessBoard.isBlackFirst = true;
-				chessBoard.isComputer = false;
+				chessBoard.setBlackFirst(true);
+				chessBoard.setComputer(false);
 				chessBoard.restartGame();
 				break;
 			case 5:
-				chessBoard.isComputer = true;
-				chessBoard.isBlackFirst = true;
-				chessBoard.isManFirst = true;
+				chessBoard.setComputer(true);
+				chessBoard.setBlackFirst(true);
+				chessBoard.setManFirst(true);
 				chessBoard.restartGame();
 				break;
 			case 6:
@@ -159,21 +159,21 @@ public class ChessFrame extends JFrame {
 				ShowMesssage.showMessage(msg);
 				break;
 			case 8:
-				chessBoard.isBlackFirst = true;
-				chessBoard.isManFirst = true;
-				chessBoard.curRole = "Man";
-				chessBoard.isComputer = true;
+				chessBoard.setBlackFirst(true);
+				chessBoard.setManFirst(true);
+				chessBoard.setCurRole("Man");
+				chessBoard.setComputer(true);
 				chessBoard.restartGame();
 				break;
 			case 9:
-				chessBoard.isBlackFirst = true;
-				chessBoard.isManFirst = false;
-				chessBoard.curRole = "Machine";
-				chessBoard.isComputer = true;
+				chessBoard.setBlackFirst(true);
+				chessBoard.setManFirst(false);
+				chessBoard.setCurRole("Machine");
+				chessBoard.setComputer(true);
 				chessBoard.restartGame();
 				chessBoard.machineDo();
-				chessBoard.isBlackFirst = false;
-				chessBoard.curRole = "Man";
+				chessBoard.setBlackFirst(false);
+				chessBoard.setCurRole("Man");
 				break;
 			case 10:
 				SaveUtil.saveChessHistory();
