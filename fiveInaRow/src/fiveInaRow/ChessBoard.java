@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 
 import utils.ShowMesssage;
 
-public class ChessBoard extends JPanel implements MouseListener {
+public class ChessBoard extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
 	private static final int MARGIN = 30;
 	private static int GRID_SPAN = 35;
@@ -35,6 +35,8 @@ public class ChessBoard extends JPanel implements MouseListener {
 	private String curRole;
 	private boolean isGameOver;
 	private int curPieceXIndex, curPieceYIndex;
+	private Coordinate mCoordinate = new Coordinate();// MousePosition
+	private Coordinate pCoordinate = new Coordinate();// PiecePosition
 
 	private static ChessBoard INSTANCE = new ChessBoard();
 	private Color tempColor;
@@ -81,27 +83,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 		}
 
 		addMouseListener(this);
-		addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				// traslate the MousePosition to PiecePosition
-				int x = (e.getX() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
-				int y = (e.getY() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
-				// gameover
-				// outside the board
-				// exist
-				if (x < 1 || x > ROWS || y < 1 || y > COLS || isGameOver || hasChess(x, y))
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				else
-					setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
+		addMouseMotionListener(this);
 	}
 
 	@Override
@@ -154,6 +136,26 @@ public class ChessBoard extends JPanel implements MouseListener {
 	}
 
 	@Override
+	public void mouseDragged(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mCoordinate.setXY(e.getX(),e.getY());
+
+		// translate the MousePosition to PiecePosition
+		pCoordinate = m2p(mCoordinate);
+		// game over
+		// outside the board
+		// existed
+		if (isOutsideBoard(pCoordinate)|| isGameOver || hasChess(pCoordinate))
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		else
+			setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	@Override
 	public void mousePressed(MouseEvent evt) {
 		getCurPointIndex(evt);
 		handleMousePressed();
@@ -175,10 +177,37 @@ public class ChessBoard extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent evt) {
 	}
 
+	private Coordinate m2p(Coordinate coordinate) {
+		int x = (coordinate.getX() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
+		int y = (coordinate.getY() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
+		
+		coordinate.setXY(x,y);
+		return coordinate;
+	}
+
+	private boolean isOutsideBoard(Coordinate coordinate) {
+		if (coordinate.getX() < 1 || coordinate.getX() > COLS) {
+			return true;
+		}
+		if (coordinate.getY() < 1 || coordinate.getY() > ROWS) {
+			return true;
+		}
+
+		return false;
+	}
+
 	// judge piece if exist at somewhere
 	private boolean hasChess(int x, int y) {
 		for (Piece c : pieces) {
 			if (c != null && c.getX() == x && c.getY() == y)
+				return true;
+		}
+		return false;
+	}
+
+	private boolean hasChess(Coordinate coordinate) {
+		for (Piece c : pieces) {
+			if (c != null && c.getX() == coordinate.getX() && c.getY() == coordinate.getY())
 				return true;
 		}
 		return false;
