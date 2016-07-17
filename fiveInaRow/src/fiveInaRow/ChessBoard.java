@@ -12,43 +12,48 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ChessBoard extends JPanel implements MouseListener {
-
 	private static final long serialVersionUID = 1L;
 	public static final int MARGIN = 30;
 	public static int GRID_SPAN = 35;
 	public static final int ROWS = 15;
 	public static final int COLS = 15;
+	private Piece[] pieces = new Piece[(ROWS) * (COLS)];
+	private int pieceCount;
 
-	Piece[] pieces = new Piece[(ROWS) * (COLS)];
 	boolean isBlackFirst;
 	boolean isComputer;
 	boolean isManFirst;
 	String curRole;
 	boolean isGameOver;
-	int pieceCount;
 	int curPieceXIndex, curPieceYIndex;
 
+	private static ChessBoard INSTANCE = new ChessBoard();
 	Color tempColor;
 	int chessBoardWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 	int chessBoardHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 	BufferedImage bgImage;
 
-	public ChessBoard() {
+	public Piece[] getPieces() {
+		return pieces;
+	}
+	
+	public int getPieceCount(){
+		return pieceCount;
+	}
+	
+	public static ChessBoard getInstance(){
+		return INSTANCE;
+	}
+
+	private ChessBoard() {
 
 		try {
 			// set the chess board style
@@ -490,59 +495,4 @@ public class ChessBoard extends JPanel implements MouseListener {
 		return value;
 	}
 
-	public void saveChessHistory() {
-
-		long time = System.currentTimeMillis();
-		Date now = new Date(time);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-		String hehe = dateFormat.format(now);
-
-		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Plain Text(*.txt)", "txt");
-		chooser.setFileFilter(filter);
-		int returnVal = chooser.showSaveDialog(chooser);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = chooser.getSelectedFile();
-
-			try {
-				if (file.exists()) {
-					int copy = JOptionPane.showConfirmDialog(null, "File existed,replace it now?", "Save",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (copy == JOptionPane.YES_OPTION) {
-						file.delete();
-						BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-						bw.append("Five In a row History Format\r\n(Index) Role( Index of piece)\r\neg.(7)white(7,7)\r\n");
-						for (int i = 0; i < pieceCount; i++) {
-							String SerialNumber = "(" + i + ")";
-							String color = pieces[i].getColor().equals(Color.black) ? "black" : "white";
-							String location = "(" + pieces[i].getX() + "," + pieces[i].getY() + ")" + "\r\n";
-							bw.append(SerialNumber + color + location);
-						}
-						bw.append(hehe);
-						bw.close();
-
-					}
-				} else {
-					BufferedWriter bw = new BufferedWriter(new FileWriter(file + ".txt"));
-					bw.append("Five In a row History Format\r\n(Index) Role( Index of piece)\r\neg.(7)white(7,7)\r\n");
-					for (int i = 0; i < pieceCount; i++) {
-						String SerialNumber = "(" + i + ")";
-						String color = pieces[i].getColor().equals(Color.black) ? "black" : "white";
-						String location = "(" + pieces[i].getX() + "," + pieces[i].getY() + ")" + "\r\n";
-						bw.append(SerialNumber + color + location);
-					}
-					bw.append("\r\n" + hehe);
-					bw.close();
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-		if (returnVal == JFileChooser.CANCEL_OPTION) {
-
-		}
-	}
 }

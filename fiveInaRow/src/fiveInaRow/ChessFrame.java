@@ -9,15 +9,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import utils.SaveUtil;
 
 public class ChessFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private ChessBoard chessBoard;
+	private ChessBoard chessBoard = ChessBoard.getInstance();
+	
 	private JMenuBar menuBar;
-
 	private JMenuItem startMenuItem, saveMenuItem, exitMenuItem, undoMenuItem;
-
 	private JMenuItem manToManMenuItem, manToMachineMenuItem;
 	private JMenuItem manFirstMenuItem, machineFirstMenuItem;
 	private JMenuItem ruleMenuItem, aboutMenuItem;
@@ -54,7 +54,6 @@ public class ChessFrame extends JFrame {
 	public ChessFrame() {
 
 		setTitle("Five In a Row");
-		chessBoard = new ChessBoard();
 		Container contentPane = getContentPane();
 		contentPane.add(chessBoard);
 		chessBoard.setOpaque(true);
@@ -176,7 +175,7 @@ public class ChessFrame extends JFrame {
 				chessBoard.curRole = "Man";
 				break;
 			case 10:
-				chessBoard.saveChessHistory();
+				SaveUtil.saveChessHistory();
 				break;
 			default:
 				break;
