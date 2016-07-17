@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import utils.ShowMesssage;;
 
 public class ChessBoard extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -187,7 +188,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 			repaint();
 			if (isWin()) {
 				String msg = String.format("Congratulatin,%s win!", isBlackFirst ? "black" : "white");
-				showMessage(msg);
+				ShowMesssage.showMessage(msg);
 				isGameOver = true;
 			}
 			isBlackFirst = !isBlackFirst;
@@ -222,7 +223,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 		repaint();
 		if (isWin()) {
 			String msg = String.format("Congratulation,%s win!", isBlackFirst ? "black" : "white");
-			showMessage(msg);
+			ShowMesssage.showMessage(msg);
 			isGameOver = true;
 		}
 		repaint();
@@ -421,7 +422,7 @@ public class ChessBoard extends JPanel implements MouseListener {
 			else
 				break;
 		}
-		// 锟斤拷锟斤拷寻锟斤拷
+		
 		for (int x = curPieceXIndex + 1, y = curPieceYIndex + 1; x <= COLS && y <= ROWS; x++, y++) {
 			Color c = isBlackFirst ? Color.black : Color.white;
 			if (getChess(x, y, c) != null)
@@ -483,16 +484,4 @@ public class ChessBoard extends JPanel implements MouseListener {
 		isGameOver = false;
 		repaint();
 	}
-
-	public void showMessage(String msg) {
-		JOptionPane.showMessageDialog(this, msg);
-	};
-
-	public int showWarning(String msg) {
-		String[] options = { "OK", "Cancel" };
-		int value = JOptionPane.showOptionDialog(null, msg, "Warning", JOptionPane.YES_NO_OPTION,
-				JOptionPane.INFORMATION_MESSAGE, null, options, null);
-		return value;
-	}
-
 }

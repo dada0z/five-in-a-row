@@ -16,9 +16,11 @@ import fiveInaRow.ChessBoard;
 import fiveInaRow.Piece;
 
 public class SaveUtil {
+	private static ChessBoard chessBoard = ChessBoard.getInstance();
+	
 	public static void saveChessHistory() {
 		
-		ChessBoard chessBoard = ChessBoard.getInstance();
+		
 		Piece[] pieces = chessBoard.getPieces();
 		int pieceCount = chessBoard.getPieceCount();
 		

@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import utils.SaveUtil;
+import utils.ShowMesssage;
 
 public class ChessFrame extends JFrame {
 
@@ -126,7 +127,7 @@ public class ChessFrame extends JFrame {
 				break;
 			case 2:
 				msg = String.format("Are you sure to exit?");
-				value = chessBoard.showWarning(msg);
+				value = ShowMesssage.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
@@ -151,11 +152,11 @@ public class ChessFrame extends JFrame {
 				break;
 			case 6:
 				msg = String.format("Standard Gomoku");
-				chessBoard.showMessage(msg);
+				ShowMesssage.showMessage(msg);
 				break;
 			case 7:
 				msg = String.format("Author：dada0z\nE-mail:dada0z@163.com");
-				chessBoard.showMessage(msg);
+				ShowMesssage.showMessage(msg);
 				break;
 			case 8:
 				chessBoard.isBlackFirst = true;
