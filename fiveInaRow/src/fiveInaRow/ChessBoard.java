@@ -90,16 +90,16 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-		g.drawImage(bgImage, 0, 0, chessBoardWidth, chessBoardHeight, this);
-		for (int i = 1; i <= ROWS; i++) {
-			g.drawLine(MARGIN, MARGIN + (i - 1) * GRID_SPAN, MARGIN + (COLS - 1) * GRID_SPAN,
-					MARGIN + (i - 1) * GRID_SPAN);
-		}
-		for (int i = 1; i <= COLS; i++) {
-			g.drawLine(MARGIN + (i - 1) * GRID_SPAN, MARGIN, MARGIN + (i - 1) * GRID_SPAN,
-					MARGIN + (ROWS - 1) * GRID_SPAN);
-		}
+		drawBgImage(g);
+		drawChessBoard(g);
 
+		drawChessPieces(g);
+	}
+
+	/**
+	 * @param g
+	 */
+	private void drawChessPieces(Graphics g) {
 		for (int i = 0; i < pieceCount; i++) {
 
 			int xPos = pieces[i].getX() * GRID_SPAN + MARGIN;
@@ -133,6 +133,27 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 				g.drawRect(xPos - Piece.DIAMETER / 2, yPos - Piece.DIAMETER / 2, 34, 35);
 			}
 		}
+	}
+
+	/**
+	 * @param g
+	 */
+	private void drawChessBoard(Graphics g) {
+		for (int i = 1; i <= ROWS; i++) {
+			g.drawLine(MARGIN, MARGIN + (i - 1) * GRID_SPAN, MARGIN + (COLS - 1) * GRID_SPAN,
+					MARGIN + (i - 1) * GRID_SPAN);
+		}
+		for (int i = 1; i <= COLS; i++) {
+			g.drawLine(MARGIN + (i - 1) * GRID_SPAN, MARGIN, MARGIN + (i - 1) * GRID_SPAN,
+					MARGIN + (ROWS - 1) * GRID_SPAN);
+		}
+	}
+
+	/**
+	 * @param g
+	 */
+	private void drawBgImage(Graphics g) {
+		g.drawImage(bgImage, 0, 0, chessBoardWidth, chessBoardHeight, this);
 	}
 
 	@Override
