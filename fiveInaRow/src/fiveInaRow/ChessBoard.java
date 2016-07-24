@@ -39,7 +39,6 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 	private Coordinate pCoordinate = new Coordinate();// PiecePosition
 
 	private static ChessBoard INSTANCE = new ChessBoard();
-	private Color tempColor;
 	private int chessBoardWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int chessBoardHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 	private BufferedImage bgImage;
@@ -105,24 +104,10 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 			int xPos = pieces[i].getX() * GRID_SPAN + MARGIN;
 			int yPos = pieces[i].getY() * GRID_SPAN + MARGIN;
 			g.setColor(pieces[i].getColor());
-			tempColor = pieces[i].getColor();
-			if (tempColor == Color.black) {
-				RadialGradientPaint paint = new RadialGradientPaint(xPos - Piece.DIAMETER / 2 + 25,
-						yPos - Piece.DIAMETER / 2 + 10, 20, new float[] { 0f, 1f },
-						new Color[] { Color.WHITE, Color.BLACK });
-				((Graphics2D) g).setPaint(paint);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-						RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
-			} else if (tempColor == Color.white) {
-				RadialGradientPaint paint = new RadialGradientPaint(xPos - Piece.DIAMETER / 2 + 25,
-						yPos - Piece.DIAMETER / 2 + 10, 70, new float[] { 0f, 1f },
-						new Color[] { Color.WHITE, Color.BLACK });
-				((Graphics2D) g).setPaint(paint);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-						RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
-
+			if (pieces[i].getColor() == Color.black) {
+				drawBlackPiece(g, xPos, yPos);
+			} else {
+				drawWhitePiece(g, xPos, yPos);
 			}
 
 			Ellipse2D e = new Ellipse2D.Float(xPos - Piece.DIAMETER / 2, yPos - Piece.DIAMETER / 2, 34, 35);
@@ -133,6 +118,34 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 				g.drawRect(xPos - Piece.DIAMETER / 2, yPos - Piece.DIAMETER / 2, 34, 35);
 			}
 		}
+	}
+
+	/**
+	 * @param g
+	 * @param xPos
+	 * @param yPos
+	 */
+	private void drawWhitePiece(Graphics g, int xPos, int yPos) {
+		RadialGradientPaint paint = new RadialGradientPaint(xPos - Piece.DIAMETER / 2 + 25,
+				yPos - Piece.DIAMETER / 2 + 10, 70, new float[] { 0f, 1f }, new Color[] { Color.WHITE, Color.BLACK });
+		((Graphics2D) g).setPaint(paint);
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+				RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
+	}
+
+	/**
+	 * @param g
+	 * @param xPos
+	 * @param yPos
+	 */
+	private void drawBlackPiece(Graphics g, int xPos, int yPos) {
+		RadialGradientPaint paint = new RadialGradientPaint(xPos - Piece.DIAMETER / 2 + 25,
+				yPos - Piece.DIAMETER / 2 + 10, 20, new float[] { 0f, 1f }, new Color[] { Color.WHITE, Color.BLACK });
+		((Graphics2D) g).setPaint(paint);
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+				RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
 	}
 
 	/**
@@ -163,14 +176,14 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mCoordinate.setXY(e.getX(),e.getY());
+		mCoordinate.setXY(e.getX(), e.getY());
 
 		// translate the MousePosition to PiecePosition
 		pCoordinate = m2p(mCoordinate);
 		// game over
 		// outside the board
 		// existed
-		if (isOutsideBoard(pCoordinate)|| isGameOver || hasChess(pCoordinate))
+		if (isOutsideBoard(pCoordinate) || isGameOver || hasChess(pCoordinate))
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		else
 			setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -201,8 +214,8 @@ public class ChessBoard extends JPanel implements MouseListener, MouseMotionList
 	private Coordinate m2p(Coordinate coordinate) {
 		int x = (coordinate.getX() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
 		int y = (coordinate.getY() - MARGIN + GRID_SPAN / 2) / GRID_SPAN;
-		
-		coordinate.setXY(x,y);
+
+		coordinate.setXY(x, y);
 		return coordinate;
 	}
 
