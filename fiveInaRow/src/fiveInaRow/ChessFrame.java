@@ -3,54 +3,45 @@
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+
 import utils.SaveUtil;
 import utils.ShowMesssage;
 
 public class ChessFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	public static final String MENU_ITEM_START = "start";
+	public static final String MENU_ITEM_SAVE = "save";
+	public static final String MENU_ITEM_EXIT = "exit";
+	public static final String MENU_ITEM_UNDO = "undo";
+	public static final String MENU_ITEM_MAN_MAN_MODE = "man-man";
+	public static final String MENU_ITEM_MAN_MACHINE_MODE = "man-machine";
+	public static final String MENU_ITEM_MAN_FIRST = "man-first";
+	public static final String MENU_ITEM_MACHINE_FIRST = "machine-first";
+	public static final String MENU_ITEM_RULES = "rules";
+	public static final String MENU_ITEM_ABOUT = "about";
+	public static final String[] MENU_ITEMS = { MENU_ITEM_START, MENU_ITEM_SAVE, MENU_ITEM_EXIT, MENU_ITEM_UNDO,
+			MENU_ITEM_MAN_MAN_MODE, MENU_ITEM_MAN_MACHINE_MODE, MENU_ITEM_MAN_FIRST, MENU_ITEM_MACHINE_FIRST,
+			MENU_ITEM_RULES, MENU_ITEM_ABOUT };
 	private ChessBoard chessBoard = ChessBoard.getInstance();
-	
+
 	private JMenuBar menuBar;
+	private JMenu sysMenu, editMenu, modeMenu, whoFirstMenu, helpMenu;
 	private JMenuItem startMenuItem, saveMenuItem, exitMenuItem, undoMenuItem;
 	private JMenuItem manToManMenuItem, manToMachineMenuItem;
 	private JMenuItem manFirstMenuItem, machineFirstMenuItem;
 	private JMenuItem ruleMenuItem, aboutMenuItem;
-	private JMenu sysMenu, editMenu, modeMenu, whoFirstMenu, helpMenu;
+	private List<JMenuItem> menuItems = new ArrayList<>();
 
 	public String msg;
-
-	enum Menu {
-		start("Start", 1), exit("Exit", 2), undo("Undo", 3), man_man("Man-Man", 4), man_machine("Man-Machine", 5), rule(
-				"Rules", 6), about("About",
-						7), manFirst("ManFirst", 8), machineFirst("MachineFirst", 9), save("Save", 10);
-		public static int getIndex(String name) {
-			for (Menu menu : Menu.values()) {
-				if (menu.name == name)
-					return menu.index;
-			}
-			return 0;
-		}
-
-		private int index;
-
-		private String name;
-
-		private Menu() {
-
-		}
-
-		private Menu(String name, int index) {
-			this.name = name;
-			this.index = index;
-		}
-	}
 
 	public ChessFrame() {
 
@@ -67,16 +58,35 @@ public class ChessFrame extends JFrame {
 		whoFirstMenu = new JMenu("First");
 		helpMenu = new JMenu("Help");
 		// Init MenuItem
-		startMenuItem = new JMenuItem("Start");
-		saveMenuItem = new JMenuItem("Save");
-		exitMenuItem = new JMenuItem("Exit");
-		undoMenuItem = new JMenuItem("Undo");
-		manToManMenuItem = new JMenuItem("Man-Man");
-		manToMachineMenuItem = new JMenuItem("Man-Machine");
-		manFirstMenuItem = new JMenuItem("ManFirst");
-		machineFirstMenuItem = new JMenuItem("MachineFirst");
-		ruleMenuItem = new JMenuItem("Rules");
-		aboutMenuItem = new JMenuItem("About");
+		startMenuItem = new JMenuItem(MENU_ITEM_START);
+		menuItems.add(startMenuItem);
+
+		saveMenuItem = new JMenuItem(MENU_ITEM_SAVE);
+		menuItems.add(saveMenuItem);
+
+		exitMenuItem = new JMenuItem(MENU_ITEM_EXIT);
+		menuItems.add(exitMenuItem);
+
+		undoMenuItem = new JMenuItem(MENU_ITEM_UNDO);
+		menuItems.add(undoMenuItem);
+
+		manToManMenuItem = new JMenuItem(MENU_ITEM_MAN_MAN_MODE);
+		menuItems.add(manToManMenuItem);
+
+		manToMachineMenuItem = new JMenuItem(MENU_ITEM_MAN_MACHINE_MODE);
+		menuItems.add(manToMachineMenuItem);
+
+		manFirstMenuItem = new JMenuItem(MENU_ITEM_MAN_FIRST);
+		menuItems.add(manFirstMenuItem);
+
+		machineFirstMenuItem = new JMenuItem(MENU_ITEM_MACHINE_FIRST);
+		menuItems.add(machineFirstMenuItem);
+
+		ruleMenuItem = new JMenuItem(MENU_ITEM_RULES);
+		menuItems.add(ruleMenuItem);
+
+		aboutMenuItem = new JMenuItem(MENU_ITEM_ABOUT);
+		menuItems.add(aboutMenuItem);
 
 		// Add MenuItem to Menu
 		sysMenu.add(startMenuItem);
@@ -92,7 +102,7 @@ public class ChessFrame extends JFrame {
 		// Init chessBoard listener
 		ChessBoardListener listener = new ChessBoardListener();
 		// listen to the menu items
-		this.startMenuItem.addActionListener(listener);
+		startMenuItem.addActionListener(listener);
 		saveMenuItem.addActionListener(listener);
 		exitMenuItem.addActionListener(listener);
 		undoMenuItem.addActionListener(listener);
@@ -119,13 +129,16 @@ public class ChessFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
 			int value;
-			switch (Menu.getIndex(cmd)) {
-			case 1:
+			switch (cmd) {
+			case MENU_ITEM_START:
 				chessBoard.setBlackFirst(true);
 				chessBoard.restartGame();
 				chessBoard.repaint();
 				break;
-			case 2:
+			case MENU_ITEM_SAVE:
+				SaveUtil.saveChessHistory();
+				break;
+			case MENU_ITEM_EXIT:
 				msg = String.format("Are you sure to exit?");
 				value = ShowMesssage.showWarning(msg);
 				if (value == JOptionPane.YES_OPTION) {
@@ -135,37 +148,29 @@ public class ChessFrame extends JFrame {
 					break;
 				}
 				break;
-			case 3:
+			case MENU_ITEM_UNDO:
 				chessBoard.undo();
 				chessBoard.repaint();
 				break;
-			case 4:
+			case MENU_ITEM_MAN_MAN_MODE:
 				chessBoard.setBlackFirst(true);
 				chessBoard.setComputer(false);
 				chessBoard.restartGame();
 				break;
-			case 5:
+			case MENU_ITEM_MAN_MACHINE_MODE:
 				chessBoard.setComputer(true);
 				chessBoard.setBlackFirst(true);
 				chessBoard.setManFirst(true);
 				chessBoard.restartGame();
 				break;
-			case 6:
-				msg = String.format("Standard Gomoku");
-				ShowMesssage.showMessage(msg);
-				break;
-			case 7:
-				msg = String.format("Author：dada0z\nE-mail:dada0z@163.com");
-				ShowMesssage.showMessage(msg);
-				break;
-			case 8:
+			case MENU_ITEM_MAN_FIRST:
 				chessBoard.setBlackFirst(true);
 				chessBoard.setManFirst(true);
 				chessBoard.setCurRole("Man");
 				chessBoard.setComputer(true);
 				chessBoard.restartGame();
 				break;
-			case 9:
+			case MENU_ITEM_MACHINE_FIRST:
 				chessBoard.setBlackFirst(true);
 				chessBoard.setManFirst(false);
 				chessBoard.setCurRole("Machine");
@@ -175,8 +180,13 @@ public class ChessFrame extends JFrame {
 				chessBoard.setBlackFirst(false);
 				chessBoard.setCurRole("Man");
 				break;
-			case 10:
-				SaveUtil.saveChessHistory();
+			case MENU_ITEM_RULES:
+				msg = String.format("Standard Gomoku");
+				ShowMesssage.showMessage(msg);
+				break;
+			case MENU_ITEM_ABOUT:
+				msg = String.format("Author：dada0z\nE-mail:dada0z@163.com");
+				ShowMesssage.showMessage(msg);
 				break;
 			default:
 				break;
